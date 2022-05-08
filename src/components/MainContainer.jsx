@@ -1,10 +1,11 @@
 import React
  from "react";
+import HomeContainer from "./HomeContainer";
 const MainContainer =()=>{
     return(
-        <div>
-          Main Container
-        </div>
+      <div className="w-full h-auto flex flex-col">
+        <HomeContainer/>
+      </div>
     )
 }
 

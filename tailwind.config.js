@@ -4,8 +4,24 @@ module.exports = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        move: {
+          '0%, 100%': { transform: 'translateY(5px)' },
+          '50%': { transform: 'translateY(-5px)' },
+        },
+        slide:{
+          '0%':{ transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0%)'},
+        }
+      },
+      animation: {
+        'move': 'move 5s infinite',
+        'spin-slow' : 'spin 7s 1 ease-in-out',
+        'slide':"slide 0.5s ease-out"
+      },
       width:{
         150:"150px",
+        170:"170px",
         190:"190px",
         225:"225px",
         275:"275px",
@@ -49,7 +65,10 @@ module.exports = {
         textColor:"#515151",
         cartNumBg:"#F14929",
         primary:"#f5f3f3",
+        main:"#F14929",
+        cardOverlay: "rgba(256,256,256,0.4)"
       },
+
     },
   },
   plugins: [],

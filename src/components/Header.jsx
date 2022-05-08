@@ -32,6 +32,8 @@ const Header =()=>{
         }
       };
 
+      
+
       const logout = () => {
         setIsMenu(false);
         localStorage.clear();
@@ -44,18 +46,17 @@ const Header =()=>{
 
 
     return(
-        <AnimatePresence>
-        <div className="fixed z-50 w-screen p-4 px-16 bg-inherit">
+        <div className="fixed z-50 w-screen p-3 px-4 bg-inherit md:p-4 md:px-16">
             <div className="hidden md:flex w-full h-full justify-between">
                 <Link to ="/" className="flex items-center gap-2">
                     <img src={Logo} alt ="logo" className="w-28 object-cover"></img>
                 </Link>
                 <div className="flex justify-center items-center gap-8">
-                    <ul className="flex items-center gap-8 ">
-                        <li className="text-base text-textColor hover:text-headingColor transition-all duration-100 ease-in-out cursor-pointer">Home</li>
-                        <li className="text-base text-textColor hover:text-headingColor transition-all duration-100 ease-in-out cursor-pointer">Order</li>
-                        <li className="text-base text-textColor hover:text-headingColor transition-all duration-100 ease-in-out cursor-pointer">Menu</li>
-                        <li className="text-base text-textColor hover:text-headingColor transition-all duration-100 ease-in-out cursor-pointer">Contact</li>
+                    <ul className="flex items-center gap-10">
+                        <li className="text-base text-textColor hover:text-headingColor transition-all duration-100 ease-in-out cursor-pointer" onClick = {()=>setIsMenu(false)}>Home</li>
+                        <li className="text-base text-textColor hover:text-headingColor transition-all duration-100 ease-in-out cursor-pointer" onClick = {()=>setIsMenu(false)}>Order</li>
+                        <li className="text-base text-textColor hover:text-headingColor transition-all duration-100 ease-in-out cursor-pointer" onClick = {()=>setIsMenu(false)}>Menu</li>
+                        <li className="text-base text-textColor hover:text-headingColor transition-all duration-100 ease-in-out cursor-pointer" onClick = {()=>setIsMenu(false)}>Contact</li>
                     </ul>
                     <div className="flex relative justify-center items-center text-textColor text-2xl cursor-pointer hover:text-headingColor">
                     <MdShoppingBasket/>
@@ -73,23 +74,30 @@ const Header =()=>{
                     />
                     {
                     isMenu &&
-                    <div className="w-36 absolute bg-white shadow-xl rounded-lg right-0 top-11 cursor-pointer">
+                    <motion.div 
+                       initial={{opacity:0,scale:0.6}}
+                       animate={{opacity:1,scale:1}}
+                       exit={{opacity:0,scale:0.6}}
+                       className="w-36 absolute bg-white shadow-xl rounded-lg right-0 top-11 cursor-pointer">
                         {
                          user.email==='iemamyaman007@gmail.com'
                         &&
-                            <Link to ="/admin" className="px-4 py-2 hover:bg-slate-100 transition-all duration-100 ease-in-out rounded-tl-lg rounded-tr-lg flex gap-1 items-center justify-center">
+                            <Link 
+                              to ="/admin" 
+                              className="px-4 py-2 hover:bg-slate-100 transition-all duration-100 ease-in-out rounded-tl-lg rounded-tr-lg flex gap-1 items-center justify-center"
+                              onClick = {()=>setIsMenu(false)}>
                                 Add Item
                                 <MdAdd/>
                             </Link>
                         }
                         <p 
-                          className="px-4 py-2 hover:bg-slate-100 transition-all duration-100 ease-in-out rounded-bl-lg rounded-br-lg flex gap-3 items-center justify-center"
+                          className="px-4 py-2 hover:bg-gray-100 transition-all duration-100 ease-in-out rounded-bl-lg rounded-br-lg flex gap-3 items-center justify-center"
                           onClick={logout}
                           >
                             Logout
                             <MdOutlineLogout/>
                         </p>
-                    </div>
+                    </motion.div>
 }
                     </div>
                      
@@ -97,10 +105,67 @@ const Header =()=>{
                 </div>
 
             </div>
-            
-            <div className="flex md:hidden w-full h-full"></div>
-        </div>
-        </AnimatePresence>
+
+            {/* {Mobile Menu} */}
+            <div className="flex justify-between items-center md:hidden w-full h-full">
+              <Link to ="/" className="flex items-center gap-2">
+                  <img src={Logo} alt ="logo" className="w-20 object-cover"></img>
+              </Link>
+
+              <div className="flex gap-3 items-end">
+                <div className="flex relative justify-center items-center text-textColor text-3xl cursor-pointer hover:text-headingColor">
+                    <MdShoppingBasket/>
+                      <div className="h-4 w-4 text-white bg-cartNumBg rounded-full flex justify-center items-center absolute -top-3 -right-0.5">
+                          <p className="text-xs">2</p>
+                      </div>
+                </div>
+
+                <div className="relative">
+                      <motion.img 
+                          whileTap={{ scale: 0.6 }} 
+                          src ={user ? user.photoURL : Avatar} 
+                          className="w-10 shadow-lg rounded-full cursor-pointer"
+                          alt="userprofile"
+                          onClick={login}
+                      />
+                      {
+                      isMenu &&
+                      <motion.div 
+                        initial={{opacity:0,scale:0.6}}
+                        animate={{opacity:1,scale:1}}
+                        exit={{opacity:0,scale:0.6}}
+                        className="w-36 absolute bg-white shadow-xl rounded-lg right-0 top-11 cursor-pointer">
+                          {
+                          user.email==='iemamyaman007@gmail.com'
+                          &&
+                              <Link to ="/admin" 
+                                className="px-4 py-2 hover:bg-slate-100 transition-all duration-100 ease-in-out rounded-tl-lg rounded-tr-lg flex gap-1 items-center justify-center"
+                                onClick = {()=>setIsMenu(false)}
+                                >
+                                  Add Item
+                                  <MdAdd/>
+                              </Link>
+                          }
+                          
+                          <ul className="flex flex-col items-center w-full">
+                            <li className="w-full text-base text-textColor hover:text-headingColor px-4 py-2 hover:bg-slate-100 transition-all duration-100 ease-in-out cursor-pointer" onClick = {()=>setIsMenu(false)}>Home</li>
+                            <li className="w-full text-base text-textColor hover:text-headingColor px-4 py-2 hover:bg-slate-100 transition-all duration-100 ease-in-out cursor-pointer" onClick = {()=>setIsMenu(false)}>Order</li>
+                            <li className=" w-full text-base text-textColor hover:text-headingColor px-4 py-2 hover:bg-slate-100 transition-all duration-100 ease-in-out cursor-pointer" onClick = {()=>setIsMenu(false)}>Menu</li>
+                            <li className=" w-full text-base text-textColor hover:text-headingColor px-4 py-2 hover:bg-slate-100 transition-all duration-100 ease-in-out cursor-pointer" onClick = {()=>setIsMenu(false)}>Contact</li>
+                          </ul>
+                          <p 
+                            className="px-4 py-2 bg-gray-100 m-2 rounded-lg hover:bg-gray-200 transition-all duration-100 ease-in-out flex gap-3 items-center justify-center"
+                            onClick={logout}
+                            >
+                              Logout
+                              <MdOutlineLogout/>
+                          </p>
+                      </motion.div>
+  }
+                      </div>
+              </div>
+            </div>
+            </div>
     )
 }
 
