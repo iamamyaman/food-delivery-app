@@ -4,6 +4,8 @@ import {IoFastFoodSharp,IoCloudUpload} from "react-icons/io5"
 import Loader from "./Loader";
 import {MdFoodBank,MdDeleteForever} from "react-icons/md"
 import {AiOutlineDollar} from "react-icons/ai"
+import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../firebaseConfig";
 
 const AdminContainer =()=>{
   const[title,setTitle] = useState();
@@ -16,12 +18,61 @@ const AdminContainer =()=>{
   const[calories,setCalories] = useState();
   const[price,setPrice] = useState();
   
-  const uploadImage = ()=>{
+  const uploadImage = (e) => {
+    setIsLoading(true);
+    const imageFile = e.target.files[0];
+    const storageRef = ref(storage, `Images/${Date.now()}-${imageFile.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const uploadProgress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      },
+      (error) => {
+        console.log(error);
+        setField(true);
+        setMsg("Error while uploading : Try AGain 🙇");
+        setAlert("danger");
+        setTimeout(() => {
+          setField(false);
+          setIsLoading(false);
+        }, 4000);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setImageAsset(downloadURL);
+          setIsLoading(false);
+          setField(true);
+          setMsg("Image uploaded successfully 😊");
+          setAlert("success");
+          setTimeout(() => {
+            setField(false);
+          }, 4000);
+        });
+      }
+    );
+  };
+
+  const deleteImage =()=>{
+    setIsLoading(true);
+    const deleteRef = ref(storage,imageAsset);
+    deleteObject(deleteRef).then(()=>{
+      setImageAsset(null);
+      setIsLoading(false);
+      setField(true);
+      setMsg("Image deleted successfully 🗑️");
+      setAlert("success");
+      setTimeout(() => {
+        setField(false);
+      }, 4000);
+    })
   }
 
-  const deleteImage =()=>{}
+  const saveDetails = ()=>{
 
-  const saveDetails = ()=>{}
+  }
   
     return(
         <div className="w-full h-auto flex justify-center items-center mt-6 md:mt-12">
@@ -87,7 +138,10 @@ const AdminContainer =()=>{
 
             <div className="w-full h-300 border-2 flex justify-center items-center">
               {isloading 
-              ? <Loader/> 
+              ? <>
+                <Loader/> 
+              </>
+              
               : <>
                   {
                     !imageAsset 
@@ -103,7 +157,7 @@ const AdminContainer =()=>{
                       :
                       (
                       <div className="relative w-full h-full">
-                        <img src={imageAsset} className="w-full h-full object-cover"/>
+                        <img src={imageAsset} className="w-full h-full object-contain"/>
                         <button 
                           type="button"
                           onClick={deleteImage}
