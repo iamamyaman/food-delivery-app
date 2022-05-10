@@ -6,6 +6,9 @@ import {MdFoodBank,MdDeleteForever} from "react-icons/md"
 import {AiOutlineDollar} from "react-icons/ai"
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../firebaseConfig";
+import { dblClick } from "@testing-library/user-event/dist/click";
+import { doc, setDoc } from "firebase/firestore";
+import { firestore } from "../firebaseConfig";
 
 const AdminContainer =()=>{
   const[title,setTitle] = useState();
@@ -70,9 +73,59 @@ const AdminContainer =()=>{
     })
   }
 
-  const saveDetails = ()=>{
-
+  const saveDetails = async()=>{
+    setIsLoading(true);
+   try{
+    if(!title || !category || !calories || !price || !imageAsset){
+      setField(true);
+      setMsg("Please fill all the fields below");
+      setAlert("danger");
+      setTimeout(() => {
+        setField(false);
+      }, 4000);
+      setIsLoading(false);
+    }
+    else{
+      const data ={
+        id:`${Date.now()}`,
+        title : title,
+        category:category,
+        price:price,
+        calories:calories,
+        qty:1,
+      }
+       const saveItem = async (data) => {await setDoc(doc(firestore,"foodItems",`${Date.now()}`),data,{merge:true})};
+       saveItem(data);
+       setIsLoading(false);
+       setField(true);
+        setMsg("Data Saved successfully");
+        setAlert("success");
+        setTimeout(() => {
+          setField(false);
+        }, 4000);
+        ClearData();
+    }
+   }
+  catch(error){
+     setField(true);
+     setMsg("Error while uploading.Try again");
+     setAlert("danger");
+     setTimeout(()=>{
+       setField(false);
+       setIsLoading(false);
+     },4000)
   }
+  }
+
+  const ClearData = ()=>{
+    setTitle("");
+    setCalories("");
+    setImageAsset(null);
+    setPrice("");
+    setCategory("Select Category")
+  }
+    
+  
   
     return(
         <div className="w-full h-auto flex justify-center items-center mt-6 md:mt-12">
@@ -115,7 +168,7 @@ const AdminContainer =()=>{
               <div className="flex items-center gap-2 w-full flex-1">
                 <MdFoodBank className="text-3xl text-gray-700"/>
                 <input 
-                  type="text" 
+                  type="number"
                   placeholder="Calories" 
                   value={calories}
                   className="w-full outline-none p-2 bg-transparent border-2 rounded-md"
@@ -126,12 +179,13 @@ const AdminContainer =()=>{
               <div className="flex items-center gap-2 w-full flex-1 mt-1">
                 <AiOutlineDollar className="text-3xl text-gray-700"/>
                 <input 
-                  type="text" 
+                  type="number" 
                   placeholder="Price" 
                   value={price}
                   className="w-full outline-none p-2 bg-transparent border-2 rounded-md"
                   onChange = {(e)=>setPrice(e.target.value)}
                 >
+
                 </input>
               </div>
             </div>
