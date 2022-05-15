@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import {MdAddShoppingCart} from "react-icons/md"
 
-const FruitContainer = ({data})=>{
+const FoodItemContainer= ({data})=>{
     console.log(data);
     return(
     <div className="w-full h-auto flex gap-2 py-2 flex-wrap justify-center">
@@ -33,4 +33,4 @@ const FruitContainer = ({data})=>{
     )
 }
 
-export default FruitContainer;
+export default FoodItemContainer;
