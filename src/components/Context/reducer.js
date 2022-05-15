@@ -5,6 +5,13 @@ const reducer =(state,action)=>{
                 ...state,
                 user:action.user
             }
+        case 'SET_FOOD_ITEMS':
+            return{
+                ...state,
+                foodItems:action.foodItems
+            }
+        default:
+            return state;
     }
 }
 

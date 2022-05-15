@@ -9,13 +9,13 @@ import { getAuth,signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import {app} from '../firebaseConfig'
 import { useStateValue } from "./Context/StateProvider";
 
+
 const Header =()=>{
     const firebaseAuth = getAuth(app);
     const provider = new GoogleAuthProvider();
     const [{user},dispatch] = useStateValue();
     const [isMenu, setIsMenu] = useState(false);
     console.log(user);
-    
     const login = async () => {
         if(!user){
           const {
@@ -53,7 +53,11 @@ const Header =()=>{
                 </Link>
                 <div className="flex justify-center items-center gap-8">
                     <ul className="flex items-center gap-10">
-                        <li className="text-base text-textColor hover:text-headingColor transition-all duration-100 ease-in-out cursor-pointer" onClick = {()=>setIsMenu(false)}>Home</li>
+                        <li className="text-base text-textColor hover:text-headingColor transition-all duration-100 ease-in-out cursor-pointer" 
+                          onClick = {()=>setIsMenu(false)}
+                        >
+                          <Link to ="/">Home</Link>
+                        </li>
                         <li className="text-base text-textColor hover:text-headingColor transition-all duration-100 ease-in-out cursor-pointer" onClick = {()=>setIsMenu(false)}>Order</li>
                         <li className="text-base text-textColor hover:text-headingColor transition-all duration-100 ease-in-out cursor-pointer" onClick = {()=>setIsMenu(false)}>Menu</li>
                         <li className="text-base text-textColor hover:text-headingColor transition-all duration-100 ease-in-out cursor-pointer" onClick = {()=>setIsMenu(false)}>Contact</li>

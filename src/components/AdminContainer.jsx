@@ -1,14 +1,17 @@
-import React,{useState} from "react";
+import React,{useState,useEffect,useRef} from "react";
 import { categories } from "../utils/data";
 import {IoFastFoodSharp,IoCloudUpload} from "react-icons/io5"
 import Loader from "./Loader";
 import {MdFoodBank,MdDeleteForever} from "react-icons/md"
 import {AiOutlineDollar} from "react-icons/ai"
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+
 import { storage } from "../firebaseConfig";
 import { dblClick } from "@testing-library/user-event/dist/click";
 import { doc, setDoc } from "firebase/firestore";
 import { firestore } from "../firebaseConfig";
+import { getAllFoodItems } from "../utils/firebaseFunction";
+import { useStateValue } from "./Context/StateProvider";
 
 const AdminContainer =()=>{
   const[title,setTitle] = useState();
@@ -20,6 +23,16 @@ const AdminContainer =()=>{
   const [imageAsset,setImageAsset] = useState(null);
   const[calories,setCalories] = useState();
   const[price,setPrice] = useState();
+  const[{foodItems},dispatch] = useStateValue();
+
+  const fetchFoodItems = async()=>{
+    await getAllFoodItems().then((data)=>{
+      dispatch({
+        type:"SET_FOOD_ITEMS",
+        foodItems:data
+      })
+    })
+  }
   
   const uploadImage = (e) => {
     setIsLoading(true);
@@ -93,6 +106,7 @@ const AdminContainer =()=>{
         price:price,
         calories:calories,
         qty:1,
+        imageURL:imageAsset,
       }
        const saveItem = async (data) => {await setDoc(doc(firestore,"foodItems",`${Date.now()}`),data,{merge:true})};
        saveItem(data);
@@ -104,6 +118,7 @@ const AdminContainer =()=>{
           setField(false);
         }, 4000);
         ClearData();
+        fetchFoodItems();
     }
    }
   catch(error){
@@ -122,13 +137,13 @@ const AdminContainer =()=>{
     setCalories("");
     setImageAsset(null);
     setPrice("");
-    setCategory("Select Category")
+    
   }
     
   
   
     return(
-        <div className="w-full h-auto flex justify-center items-center mt-6 md:mt-12">
+        <div className="w-full h-auto flex flex-col justify-center items-center mt-6 md:mt-12" >
           <div className="w-[95%] md:w-[70%] shadow-lg p-4 rounded-2xl flex flex-col gap-2 justify-center items-center bg-white">
             {field &&
              <p className={`w-full flex justify-center items-center text-white font-semibold ${alert==="danger" ? "bg-red-500":"bg-green-400"} p-2 rounded-md`}>
