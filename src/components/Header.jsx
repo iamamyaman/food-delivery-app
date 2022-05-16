@@ -8,12 +8,13 @@ import { Link } from "react-router-dom";
 import { getAuth,signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import {app} from '../firebaseConfig'
 import { useStateValue } from "./Context/StateProvider";
+import CartContainer from "./CartContainer";
 
 
 const Header =()=>{
     const firebaseAuth = getAuth(app);
     const provider = new GoogleAuthProvider();
-    const [{user},dispatch] = useStateValue();
+    const [{user,cartNum},dispatch] = useStateValue();
     const [isMenu, setIsMenu] = useState(false);
     console.log(user);
     const login = async () => {
@@ -63,10 +64,10 @@ const Header =()=>{
                         <li className="text-base text-textColor hover:text-headingColor transition-all duration-100 ease-in-out cursor-pointer" onClick = {()=>setIsMenu(false)}>Contact</li>
                     </ul>
                     <div className="flex relative justify-center items-center text-textColor text-2xl cursor-pointer hover:text-headingColor">
-                    <MdShoppingBasket/>
-                    <div className="h-4 w-4 text-white bg-cartNumBg rounded-full flex justify-center items-center absolute -top-3 -right-0.5">
-                        <p className="text-xs">2</p>
-                    </div>
+                      <MdShoppingBasket/>
+                      <div className="h-4 w-4 text-white bg-cartNumBg rounded-full flex justify-center items-center absolute -top-3 -right-0.5">
+                          <p className="text-xs">{0}</p>
+                      </div>
                     </div>
                     <div className="relative">
                     <motion.img 
@@ -120,7 +121,7 @@ const Header =()=>{
                 <div className="flex relative justify-center items-center text-textColor text-3xl cursor-pointer hover:text-headingColor">
                     <MdShoppingBasket/>
                       <div className="h-4 w-4 text-white bg-cartNumBg rounded-full flex justify-center items-center absolute -top-3 -right-0.5">
-                          <p className="text-xs">2</p>
+                          <p className="text-xs">{0}</p>
                       </div>
                 </div>
 
@@ -169,6 +170,7 @@ const Header =()=>{
                       </div>
               </div>
             </div>
+            <CartContainer/>
             </div>
     )
 }

@@ -4,6 +4,7 @@ import {IoFastFoodSharp} from "react-icons/io5";
 import { motion } from "framer-motion";
 import FoodItemContainer from "./FoodItemContainer";
 import { useStateValue } from "./Context/StateProvider";
+import Loader from "./Loader";
 
 
 const MenuContainer = ({data}) => {
@@ -24,7 +25,7 @@ const MenuContainer = ({data}) => {
                                 className={`group ${selected===category.urlParamName ? "bg-main" : "bg-white"} w-20 min-w-[80px] py-5 flex flex-col gap-3 items-center justify-center bg-white shadow-md rounded-lg cursor-pointer hover:bg-main`}
                                 onClick={()=>setSelected(category.urlParamName)}
                             >
-                                <div className={`flex justify-center items-center p-2 ${selected===category.urlParamName ? "bg-white" : "bg-main"} group-hover:bg-white rounded-full`}>
+                                <div className={`flex justify-center items-center p-2 ${selected===category.urlParamName ? "bg-white" : "bg-main"} group-hover:bg-white rounded-full shadow-md`}>
                                     <IoFastFoodSharp className={`text-sm ${selected===category.urlParamName ? "text-main" : "text-white"} group-hover:text-main`}/>
                                 </div>
                                 <p className={`text-xs uppercase font-semibold ${selected===category.urlParamName ? "text-white" : "text-black"} group-hover:text-white`}>{category.urlParamName}</p>
@@ -33,11 +34,15 @@ const MenuContainer = ({data}) => {
                     })
                 }
             </div>
-            <div className="w-full mt-5">
-              <FoodItemContainer
-                data={foodItems?.filter((n) => n.category == selected)}
-            />
-            </div>
+            {
+            data && data ?
+                (<div className="w-full mt-5">
+                  <FoodItemContainer
+                  data={foodItems?.filter((n) => n.category == selected)}
+                />
+                </div>)
+            : <Loader/>
+}
         </div>
     )
 }
