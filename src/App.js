@@ -3,11 +3,12 @@ import React,{useEffect} from "react";
 import { Route,Routes } from "react-router-dom";
 import { useStateValue } from "./components/Context/StateProvider";
 import { Header,MainContainer,AdminContainer } from "./components/index";
+import { fetchCartItems } from "./utils/fetchLocalStorageData";
 import { getAllFoodItems } from "./utils/firebaseFunction";
 
 
 const App =()=>{
-  const[{foodItems},dispatch] = useStateValue();
+  const[{},dispatch] = useStateValue();
 
   const fetchFoodItems = async()=>{
     await getAllFoodItems().then((data)=>{
@@ -19,9 +20,23 @@ const App =()=>{
   };
 
   useEffect(() => {
-    fetchFoodItems()
+    fetchFoodItems();
   }, []);
 
+  
+const getCartItems = ()=>{
+  const data= fetchCartItems();
+  console.log(data);
+}
+
+useEffect(() => {
+getCartItems();
+}, []);
+
+
+
+
+  
     return(
         <AnimatePresence exitBeforeEnter>
         <div className="w-screen min-h-screen flex flex-col bg-primary">

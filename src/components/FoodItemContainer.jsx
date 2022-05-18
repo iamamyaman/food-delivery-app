@@ -1,11 +1,26 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { motion } from "framer-motion";
 import {MdAddShoppingCart} from "react-icons/md"
 import Loader from "./Loader";
 import { useStateValue } from "./Context/StateProvider";
 
 const FoodItemContainer= ({data})=>{
-    const[{cartNum},dispatch] = useStateValue();
+    const[{cartItems},dispatch] = useStateValue();
+
+    const [items, setItems] = useState([]);
+
+  const addtocart = () => {
+    dispatch({
+      type: 'SET_CARTITEMS',
+      cartItems: items,
+    });
+    localStorage.setItem("cartItems", JSON.stringify(items));
+  };
+
+  useEffect(() => {
+    addtocart();
+  }, [items]);
+
     return(
     <div className="w-full h-auto flex gap-2 py-2 flex-wrap justify-center">
         {data ?
@@ -24,6 +39,7 @@ const FoodItemContainer= ({data})=>{
                           <motion.div 
                             className="w-6 h-6 p-1 rounded-full bg-main flex justify-center items-center cursor-pointer hover:opacity-90" 
                             whileTap={{scale:0.8}}
+                            onClick ={()=>setItems([...cartItems,item])}
                             >
                             <MdAddShoppingCart className="text-white"/>
                           </motion.div>

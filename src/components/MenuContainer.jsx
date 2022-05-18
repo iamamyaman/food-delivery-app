@@ -9,7 +9,8 @@ import Loader from "./Loader";
 
 const MenuContainer = ({data}) => {
  const[selected,setSelected] = useState("chicken");
- const [{foodItems }, dispatch] = useStateValue();
+ const [{foodItems,cartItems }, dispatch] = useStateValue();
+
     return(
         <div className="w-full my-10 flex flex-col items-center">
            <div className=" text-xl md:text-3xl text-headingColor font-bold mt-10 mb-8 md:mt-20 relative before:absolute before:rounded-lg before:content before:w-60 before:h-1 before:-bottom-2 before:left-[50%] before:-translate-x-1/2 before:bg-gradient-to-tr from-orange-400 to-orange-600 transition-all ease-in-out duration-100" >

@@ -7,8 +7,7 @@ import MenuContainer from "./MenuContainer";
 import CartContainer from "./CartContainer";
 
 const MainContainer =()=>{
-    const [{foodItems},dispatch] = useStateValue();
-    
+    const [{foodItems,cartItems},dispatch] = useStateValue();
     
     return(
       <div className="w-full h-auto flex flex-col relative">

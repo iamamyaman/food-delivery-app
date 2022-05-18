@@ -14,6 +14,5 @@ import {
     const items = await getDocs(
       query(collection(firestore, "foodItems"), orderBy("id", "desc"))
     );
-    console.log(items);
     return items.docs.map((doc) => doc.data());
   };

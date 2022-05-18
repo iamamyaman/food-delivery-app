@@ -1,13 +1,14 @@
-import { useState } from "react";
-import { fetchUser } from "../../utils/fetchLocalStorageData";
-import { getAllFoodItems } from "../../utils/firebaseFunction";
+import React,{ useState } from "react";
+import { fetchCartItems, fetchUser } from "../../utils/fetchLocalStorageData";
 
  const userInfo = fetchUser();
+ const cartInfo = fetchCartItems();
 
- 
  const initialState = {
     user:userInfo,
     foodItems:null,
+    showCart:false,
+    cartItems:cartInfo,
 }
 
 export default initialState;

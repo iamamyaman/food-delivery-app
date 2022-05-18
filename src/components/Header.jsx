@@ -14,9 +14,18 @@ import CartContainer from "./CartContainer";
 const Header =()=>{
     const firebaseAuth = getAuth(app);
     const provider = new GoogleAuthProvider();
-    const [{user,cartNum},dispatch] = useStateValue();
+    const [{user,cartItems,showCart},dispatch] = useStateValue();
     const [isMenu, setIsMenu] = useState(false);
-    console.log(user);
+
+    
+
+    const cartView = ()=>{
+        dispatch({
+            type:"SET_SHOW_CART",
+            showCart :!showCart
+        })
+    }
+
     const login = async () => {
         if(!user){
           const {
@@ -63,10 +72,13 @@ const Header =()=>{
                         <li className="text-base text-textColor hover:text-headingColor transition-all duration-100 ease-in-out cursor-pointer" onClick = {()=>setIsMenu(false)}>Menu</li>
                         <li className="text-base text-textColor hover:text-headingColor transition-all duration-100 ease-in-out cursor-pointer" onClick = {()=>setIsMenu(false)}>Contact</li>
                     </ul>
-                    <div className="flex relative justify-center items-center text-textColor text-2xl cursor-pointer hover:text-headingColor">
-                      <MdShoppingBasket/>
+                    
+                    <div 
+                      className="flex relative justify-center items-center text-textColor text-2xl cursor-pointer hover:text-headingColor"
+                      onClick={cartView}>
+                        <MdShoppingBasket/>
                       <div className="h-4 w-4 text-white bg-cartNumBg rounded-full flex justify-center items-center absolute -top-3 -right-0.5">
-                          <p className="text-xs">{0}</p>
+                          <p className="text-xs">{cartItems.length}</p>
                       </div>
                     </div>
                     <div className="relative">
@@ -118,10 +130,12 @@ const Header =()=>{
               </Link>
 
               <div className="flex gap-3 items-end">
-                <div className="flex relative justify-center items-center text-textColor text-3xl cursor-pointer hover:text-headingColor">
+                <div 
+                  className="flex relative justify-center items-center text-textColor text-3xl cursor-pointer hover:text-headingColor"
+                  onClick={cartView}>
                     <MdShoppingBasket/>
                       <div className="h-4 w-4 text-white bg-cartNumBg rounded-full flex justify-center items-center absolute -top-3 -right-0.5">
-                          <p className="text-xs">{0}</p>
+                          <p className="text-xs">{cartItems.length}</p>
                       </div>
                 </div>
 
@@ -170,7 +184,9 @@ const Header =()=>{
                       </div>
               </div>
             </div>
-            <CartContainer/>
+            
+            {showCart && <CartContainer/>}
+            
             </div>
     )
 }

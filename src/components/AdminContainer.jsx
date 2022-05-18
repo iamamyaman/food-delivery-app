@@ -7,7 +7,6 @@ import {AiOutlineDollar} from "react-icons/ai"
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 import { storage } from "../firebaseConfig";
-import { dblClick } from "@testing-library/user-event/dist/click";
 import { doc, setDoc } from "firebase/firestore";
 import { firestore } from "../firebaseConfig";
 import { getAllFoodItems } from "../utils/firebaseFunction";
